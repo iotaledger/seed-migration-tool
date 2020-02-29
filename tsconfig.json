@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "lib": ["es2017", "dom"],
+        "module": "esnext",
+        "target": "es2016",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "jsx": "react",
+        "allowJs": true,
+        "baseUrl": "./src-ui",
+        "paths": {
+            "~*": ["./*"]
+        },
+        "types": ["jest"]
+    },
+    "include": [
+        "src/lib/types.d.ts"
+    ],
+    "exclude": ["node_modules", "ios"]
+}

@@ -1,0 +1,116 @@
+{
+    "name": "seed-migration-tool",
+    "version": "0.2.1",
+    "author": "IOTA Foundation <contact@iota.org>",
+    "description": "Seed migration tool for IOTA",
+    "main": "dist/main.js",
+    "scripts": {
+        "postinstall": "electron-builder install-app-deps",
+        "dev": "cross-env NODE_ENV=development webpack && concurrently \"npm run dev:app\" \"npm run dev:electron\"",
+        "dev:app": "webpack-dev-server",
+        "dev:electron": "cross-env NODE_ENV=development electron dist/main.js",
+        "compile": "npm run build && electron-builder",
+        "build": "rimraf dist/* && cross-env NODE_ENV=production webpack"
+    },
+    "engines": {
+        "node": ">= 10.19.0"
+    },
+    "build": {
+        "files": [
+            "dist/",
+            "package.json"
+        ],
+        "productName": "Seed Migration Tool",
+        "artifactName": "seed-migration-tool-${version}.${ext}",
+        "appId": "org.iota.seedmigration",
+        "copyright": "IOTA Foundation",
+        "afterSign": "./scripts/notarize.macos.js",
+        "asar": true,
+        "directories": {
+            "output": "./out",
+            "buildResources": "./assets"
+        },
+        "dmg": {
+            "iconSize": 120,
+            "title": "${productName}",
+            "sign": false,
+            "contents": [
+                {
+                    "x": 520,
+                    "y": 225,
+                    "type": "link",
+                    "path": "/Applications"
+                },
+                {
+                    "x": 170,
+                    "y": 225,
+                    "type": "file"
+                }
+            ]
+        },
+        "nsis": {
+            "deleteAppDataOnUninstall": true
+        },
+        "win": {
+            "publisherName": "IOTA Stiftung",
+            "target": "nsis",
+            "timeStampServer": "http://timestamp.digicert.com"
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "desktop": {
+                "Name": "Seed Migration Tool",
+                "Comment": "Seed migration tool for IOTA",
+                "Categories": "Office;Network;Finance"
+            }
+        },
+        "mac": {
+            "category": "public.app-category.finance",
+            "target": [
+                "dmg",
+                "zip"
+            ],
+            "entitlements": "./entitlements.mac.plist",
+            "entitlementsInherit": "./entitlements.mac.plist",
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "asarUnpack": [
+                "**/*.node"
+            ]
+        }
+    },
+    "devDependencies": {
+        "@types/argon2-browser": "1.12.0",
+        "@types/kdbxweb": "1.2.0",
+        "base64-loader": "1.0.0",
+        "concurrently": "5.1.0",
+        "copy-webpack-plugin": "5.1.1",
+        "cross-env": "7.0.0",
+        "css-loader": "3.4.2",
+        "electron": "6.1.8",
+        "electron-builder": "22.3.2",
+        "electron-notarize": "0.2.1",
+        "mini-css-extract-plugin": "0.9.0",
+        "node-loader": "0.6.0",
+        "rimraf": "3.0.2",
+        "svelte": "3.18.2",
+        "svelte-loader": "2.13.6",
+        "ts-loader": "6.2.1",
+        "typescript": "3.7.5",
+        "webpack": "4.41.6",
+        "webpack-cli": "3.3.11",
+        "webpack-dev-server": "3.10.3",
+        "webpack-livereload-plugin": "2.2.0"
+    },
+    "dependencies": {
+        "argon2-browser": "1.13.0",
+        "entangled-node": "iotaledger/entangled-node#8c5270e",
+        "iota.lib.js": "0.5.2",
+        "kdbxweb": "1.5.7",
+        "micro-promisify": "0.1.1",
+        "perfect-scrollbar": "^1.5.0",
+        "zxcvbn": "^4.4.2"
+    }
+}
