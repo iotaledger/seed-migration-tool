@@ -23,6 +23,18 @@
     import AlreadyMigrated from './views/AlreadyMigrated'
     import Minimum from './views/Minimum.svelte'
     import MigrateOnce from './views/MigrateOnce.svelte'
+
+    const screensBySequence = [
+        'import',
+        'migrateOnce',
+        'loading/import',
+        'balance',
+        'export',
+        'verify',
+        'loading/export',
+        'transfer',
+        'success'
+    ]
 </script>
 
 <style>
@@ -44,7 +56,7 @@
 {#if $view === 'status'}
     <StatusBanner />
 {:else}
-    <Header />
+    <Header totalSteps={screensBySequence.length} step={screensBySequence.indexOf($view) + 1} />
 {/if}
 <main>
     <article>
