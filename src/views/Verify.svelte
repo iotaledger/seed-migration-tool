@@ -115,7 +115,7 @@
         <Button onClick={onUnlock} disabled={password.length === 0}>Continue</Button>
     </Footer>
 {:else}
-    <h1>Check your new seed</h1>
+    <h1>Validate the seed you just exported</h1>
 
     {#if incorrectSeedVaultError}
         <Info error center>Wrong SeedVault file. Make sure you selected the correct SeedVault file.</Info>
