@@ -5,6 +5,9 @@
     export let score = null
 
     export let onConfirm = null
+    export let isSeedInput = false
+
+    let cutCopyPaste = isSeedInput ? "return false" : "return true";
 
     let inputType = 'password'
 
@@ -135,5 +138,5 @@
             </svg>
         {/if}
     </button>
-    <input type={inputType} {value} on:input={onInput} on:keydown={onKey} onCopy="return false" onCut="return false" onPaste="return false" />
+    <input type={inputType} {value} on:input={onInput} on:keydown={onKey} onCopy={cutCopyPaste} onCut={cutCopyPaste} onPaste={cutCopyPaste}  />
 </div>

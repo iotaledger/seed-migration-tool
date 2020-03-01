@@ -138,7 +138,8 @@
         label={"Reenter your seed below"}
         indicator={seed.length === 0 ? '' : seed.length < 81 ? '< 81' : seed.length > 81 ? '> 81' : 'Checksum: ' + getSeedChecksum(seed)}
         bind:value={seed}
-        onConfirm={onSeedEnter} />
+        onConfirm={onSeedEnter}
+        isSeedInput />
 
     <Dropzone {onDrop} label={"Or reimport the SeedVault file"}/>
 

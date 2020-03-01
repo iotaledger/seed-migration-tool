@@ -19,7 +19,6 @@
 
     import Button from '../components/Button.svelte'
     import Info from '../components/Info.svelte'
-    import Input from '../components/Input.svelte'
     import Footer from '../components/Footer.svelte'
     import Loading from '../components/Loading.svelte'
 
