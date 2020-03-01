@@ -47,7 +47,7 @@
     }
 
     article {
-        padding: 20px;
+        padding: 60px 20px 20px;
         width: 100%;
         max-width: 680px;
     }

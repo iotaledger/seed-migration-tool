@@ -6,34 +6,75 @@
 <style>
     header {
         width: 100%;
-        height: 100px;
+        height: 80px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 40px 0;
+        padding: 15px 40px 0;
+        background: #fff;
     }
 
     img {
-        width: 316px;
-        height: 73px;
+        width: 221px;
+        height: 51px;
     }
 
     span {
         font-size: 20px;
     }
 
-    h2 {
-        font-weight: 700;
-        color: #67A5C6;
-        margin: 0 auto;
-        padding-right: 70px;
+    div {
+        height: 5px;
+        display: flex;
+        flex: 9;
+        flex-direction: row;
+    }
+
+    div div {
+        height: 5px;
+        width: 10px;
+        background: #000;
+        flex: 1;
+        border-right: 4px solid #fff;
+        justify-content: center;
+    }
+
+    div div:last-of-type {
+        border-right: 0px;
+    }
+
+    .currentStep {
+        background: #5dbcd2;
+    }
+
+    .futureStep {
+        background: #fff;
+    }
+    
+    .pastStep {
+        background: #249357;
+    }
+
+    div span {
+        font-size: 16px;
+        padding-top: 10px;
     }
 </style>
 
 <header>
     <img src="./seed-manager.svg" alt="Seed Manager" />
-    {#if step}
-        <h2>Step {step} of {totalSteps}</h2>
-    {/if}
     <span>Need help? <a href="https://discord.iota.org">Visit our Discord</a></span>
 </header>
+<div>
+        {#each new Array(totalSteps) as s, i}
+            {#if i + 1 < step}
+                <div class="pastStep"/>
+            {:else if i + 1 === step}
+                <div class="currentStep">
+                    <span>Step {step} of {totalSteps}</span>
+                </div>
+            {:else if i + 1 > step}
+                <div class="futureStep"/>
+            {/if}
+        {/each}
+</div>
