@@ -1,6 +1,6 @@
 {
     "name": "seed-migration-tool",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "author": "IOTA Foundation <contact@iota.org>",
     "description": "Seed migration tool for IOTA",
     "main": "dist/main.js",
