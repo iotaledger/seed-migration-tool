@@ -11,7 +11,7 @@
     import { accumulateBalance, searchAddresses } from '../lib/iota'
     import SeedStore from '../lib/SeedStore'
 
-    const balance = accumulateBalance(get(importSeed).meta)
+    let balance = accumulateBalance(get(importSeed).meta)
     let isSyncingAddresses = false
 
     const onClick = () => {
@@ -35,6 +35,8 @@
                         meta: [...existingAddressData.meta, ...newMeta]
                     })
                 )
+
+                balance = accumulateBalance(get(importSeed).meta)
 
                 isSyncingAddresses = false
             })
@@ -71,7 +73,6 @@
     Account balance:
     <strong>{formatIotas(balance)}</strong>
 </h1>
-
 
 <Info center>
     <strong>If your balance is incorrect, make sure you have entered your seed correctly.</strong>
