@@ -111,7 +111,7 @@
     {:else if $importError}
         <Info error center>Error importing seed. Please try again.</Info>
     {:else}
-        <h2>Manually type your seed below or upload a SeedVault file</h2>
+        <h2>Manually type your seed below or import a SeedVault file</h2>
     {/if}
 
     <Input
@@ -120,7 +120,7 @@
         bind:value={seed}
         onConfirm={onSeedEnter} />
 
-    <Dropzone {onDrop} label="Or upload a SeedVault"/>
+    <Dropzone {onDrop} label="Or import a SeedVault"/>
 
     <Footer back>
         <Button onClick={onSeedEnter} disabled={seed.length !== 81}>Continue</Button>
