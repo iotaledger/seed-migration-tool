@@ -167,7 +167,7 @@
                 ) ||
                 data.salt.split(',').length !== SALT_LENGTH ||
                 data.iv.split(',').length !== IV_LENGTH ||
-                (data.key.split(',').length && !data.key.split(',').every(Number))
+                (data.key.split(',').length && !data.key.split(',').some(isNaN))
             ) {
                 return (importError = 'Invalid or corrupt log data')
             }
