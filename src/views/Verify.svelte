@@ -115,7 +115,7 @@
         <Button onClick={onUnlock} disabled={password.length === 0}>Continue</Button>
     </Footer>
 {:else}
-    <h1>Check your new seed</h1>
+    <h1>Reinput the seed you just exported</h1>
 
     {#if incorrectSeedVaultError}
         <Info error center>Wrong SeedVault file. Make sure you selected the correct SeedVault file.</Info>
@@ -130,17 +130,17 @@
     {:else if $prepareBundleError}
         <Info error center>Error checking seed. Please try again.</Info>
     {:else}
-        <h2>Manually type your new seed below or upload the SeedVault file</h2>
+        <h2>We need to check that you backed up your new seed. Manually type the seed below or reimport the SeedVault file </h2>
     {/if}
 
 
     <Input
-        label={"Enter your new seed below"}
+        label={"Reenter your seed below"}
         indicator={seed.length === 0 ? '' : seed.length < 81 ? '< 81' : seed.length > 81 ? '> 81' : 'Checksum: ' + getSeedChecksum(seed)}
         bind:value={seed}
         onConfirm={onSeedEnter} />
 
-    <Dropzone {onDrop} label={"Or upload your SeedVault"}/>
+    <Dropzone {onDrop} label={"Or reimport the SeedVault file"}/>
 
     <Footer back previousScreen='export'>
         <Button onClick={onSeedEnter} disabled={seed.length !== 81}>Continue</Button>
