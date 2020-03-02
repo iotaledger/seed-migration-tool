@@ -242,11 +242,11 @@ export const persistent = <T>(key: string, initialValue: T): Writable<T> => {
  * Converts migration log date to human readable format
  *
  * @method toHumanReadableDate
- * @param {string} value
+ * @param {string} migrationDate
  *
  * @returns {string}
  */
-export const toHumanReadableDate = (migrationDate) => {
+export const toHumanReadableDate = (migrationDate: string) => {
     const dateComponents = migrationDate.split('-');
 
     return `${dateComponents[0]}/${dateComponents[1]}/${dateComponents[2]} ${dateComponents[3].substring(0, 2)}:${dateComponents[3].substring(2)}`
@@ -261,7 +261,8 @@ export const toHumanReadableDate = (migrationDate) => {
  * @returns {Uint8Array}
  */
 export const parseUint8ArrayString = (input: string): Uint8Array => {
-    const arr = input.split(',');
+    const arr = input.split(',').map(Number);
+    
     return Uint8Array.from(arr);
 }
 
@@ -278,7 +279,7 @@ export const withFallback = (promiseFunc: (provider?: string) => (...args: any) 
     return (...args: any[]) => {
         let node = DEFAULT_NODE;
 
-        const execute = (provider: string) => {
+        const execute = (provider: string): Promise<any> => {
             return promiseFunc(provider)(...args).catch((error) => {
                 if (node !== FALLBACK_NODE) {
                     node = FALLBACK_NODE;

@@ -46,11 +46,11 @@ class SeedStore {
      * 
      * @method prepareTransfers
      * 
-     * @param {string} provider
+     * @param {string} [provider]
      * 
      * @returns {Promise<string[]>}
      */
-    prepareTransfers(provider: string) {
+    prepareTransfers(provider?: string) {
         return (transfers: Transfer[], options: PrepareTransfersOptions): Promise<string[]> => {
             return api.prepareTransfers(provider)(
                 bytesToString(this.seed),

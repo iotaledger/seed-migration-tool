@@ -5,6 +5,13 @@ import SeedStore from './SeedStore';
 
 export const iota = new Iota({ provider: DEFAULT_NODE });
 
+type Command = 'getBalances' | 'wereAddressesSpentFrom' | 'findTransactions'
+
+export type IotaApiRequest = {
+    command: Command
+    addresses?: string[]
+}
+
 export type PrepareTransfersOptions = {
     inputs: Input[]
 };
@@ -83,8 +90,15 @@ export type AddressGenerationOptions = {
  *
  * @returns {array}
  */
-export const createAddressData = (addressHistory: AddressHistory, keyIndexes?: number[]): AddressObject[] => {
-    const hasProvidedKeyIndexes = keyIndexes && keyIndexes.length > 0;
+export const createAddressData = (addressHistory: AddressHistory, keyIndexes: number[] = []): AddressObject[] => {
+    const sizeOfKeyIndexes = keyIndexes.length;
+    const sizeOfAddresses = addressHistory.addresses.length;
+
+    const hasProvidedKeyIndexes = sizeOfKeyIndexes > 0;
+
+    if (hasProvidedKeyIndexes && sizeOfAddresses !== sizeOfKeyIndexes) {
+        throw new Error('Key indexes length mismatch');
+    }
 
     return addressHistory.addresses.map((address, index) => ({
         address,
@@ -103,7 +117,7 @@ export const createAddressData = (addressHistory: AddressHistory, keyIndexes?: n
  *
  * @returns {object} IOTA instance
  */
-const getIotaInstance = (provider: string): Iota => provider ? new Iota({ provider }) : iota;
+const getIotaInstance = (provider: string) => provider ? new Iota({ provider }) : iota;
 
 const api = {
     findTransactions: (provider: string) => {
@@ -152,7 +166,7 @@ const api = {
  *
  *  @returns {function(array, [array]): Promise<{object}>
  */
-const findAddressesData = (provider: string) => (addresses: string[]) => {
+export const findAddressesData = (provider?: string) => (addresses: string[]) => {
     return Promise.all([
         api.findTransactions(provider)({ addresses }),
         api.getBalances(provider)(addresses, 100),
@@ -181,7 +195,7 @@ const findAddressesData = (provider: string) => (addresses: string[]) => {
  *
  *  @returns {function(number, string, array, object): Promise<array>}
  */
-export const removeUnusedAddresses = (provider: string) => (
+export const removeUnusedAddresses = (provider?: string) => (
     index: number,
     latestUnusedAddress: string,
     finalAddresses: string[],
@@ -279,7 +293,16 @@ const getFullAddressHistory = (provider: string) => (seedStore: SeedStore) => {
     return generateAndStoreAddressesInBatch(options);
 };
 
-export const syncAccount = (provider: string) => (seedStore: SeedStore): Promise<AddressObject[]> => {
+/**
+ * Syncs account information with the Tangle
+ * 
+ * @method syncAccount
+ * 
+ * @param {string} [provider]
+ * 
+ * @returns {Promise<AddressObject[]>}
+ */
+export const syncAccount = (provider?: string) => (seedStore: SeedStore): Promise<AddressObject[]> => {
     return getFullAddressHistory(provider)(seedStore).then(createAddressData);
 };
 
@@ -309,7 +332,7 @@ export const accumulateBalance = (addressHistory: AddressObject[]): number => {
  * 
  * @returns {Input[]}
  */
-const prepareInputs = (addressData: AddressObject[]): Input[] => {
+export const prepareInputs = (addressData: AddressObject[]): Input[] => {
     return addressData
         .filter((addressObject: AddressObject) => addressObject.balance > 0)
         .map((addressObject: AddressObject) => ({
@@ -359,11 +382,11 @@ export const getAddressObjectWithHighestIndex = (addressData: AddressObject[]): 
  * 
  * @method prepareBundle
  * 
- * @param {string} provider 
+ * @param {string} [provider]
  * 
  * @returns {Promise<string>}
  */
-export const prepareBundle = (provider: string) => (currentSeedStore: SeedStore, newSeedStore: SeedStore): Promise<{ trytes: string[], transactionObjects: TransactionBase[] }> => {
+export const prepareBundle = (provider?: string) => (currentSeedStore: SeedStore, newSeedStore: SeedStore): Promise<{ trytes: string[], transactionObjects: TransactionBase[] }> => {
     const balance: number = accumulateBalance(currentSeedStore.meta)
     const inputs: Input[] = prepareInputs(currentSeedStore.meta)
 
@@ -384,11 +407,11 @@ export const prepareBundle = (provider: string) => (currentSeedStore: SeedStore,
  * 
  * @method searchAddresses
  * 
- * @param {string} provider
+ * @param {string} [provider]
  * 
  * @returns {Promise<AddressObject[]>} 
  */
-export const searchAddresses = (provider: string) => (seedStore: SeedStore): Promise<AddressObject[]> => {
+export const searchAddresses = (provider?: string) => (seedStore: SeedStore): Promise<AddressObject[]> => {
     const latestAddressObject: AddressObject = seedStore.meta.reduce(
         (acc: AddressObject, addressObject: AddressObject) => acc.index > addressObject.index ? acc : addressObject
     );
