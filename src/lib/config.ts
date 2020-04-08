@@ -1,11 +1,13 @@
 import { SecurityLevels } from './iota';
 import { version } from '../../package.json'
 
+export const __TEST__ = process.env.NODE_ENV === 'test';
+
 /** Address security level used as default */
 export const DEFAULT_SECURITY_LEVEL: SecurityLevels = 2;
 
 /** Default node */
-export const DEFAULT_NODE: string = 'https://nodes-ng.iota.org';
+export const DEFAULT_NODE: string = __TEST__ ? 'http://localhost:14265' : 'https://nodes-ng.iota.org';
 
 /** Fallback node */
 export const FALLBACK_NODE: string = 'https://nodes.iota.org';
